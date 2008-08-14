@@ -1,4 +1,8 @@
 class SpecRoutesTester
+  def self.draw(&block)
+    yield self.new(eval('self', block.binding))
+  end
+
   def initialize(example)
     @example = example
   end
