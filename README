@@ -1,0 +1,30 @@
+SpecRoutesTester
+================
+
+SpecRoutesTester class allows you much easier routes testing with rspec
+
+Example
+=======
+
+cut code from routes and insert it changing only route requrements (:login => /[a-z]+/ to :login => 'qwerty' for example)
+
+describe UsersController, "routes" do
+  it "should route users" do
+    map = SpecRoutesTester.new(self)
+    map.with_options :controller => 'users' do |m|
+      m.users  'users',  :action => 'index',  :conditions => {:method => :get}
+
+      m.signup 'signup', :action => 'create', :conditions => {:method => :post}
+      m.signup 'signup', :action => 'new',    :conditions => {:method => :get}
+
+      m.with_options :login => 'qwerty' do |mm|
+        mm.edit_user 'users/qwerty/edit', :action => 'edit',    :conditions => {:method => :get}
+        mm.user      'users/qwerty',      :action => 'show',    :conditions => {:method => :get}
+        mm.user      'users/qwerty',      :action => 'update',  :conditions => {:method => :put}
+        mm.user      'users/qwerty',      :action => 'destroy', :conditions => {:method => :delete}
+      end
+    end
+  end
+end
+
+Copyright (c) 2008 [name of plugin creator], released under the MIT license
